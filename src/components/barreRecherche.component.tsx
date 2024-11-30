@@ -68,7 +68,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export const BarreRecherche = (props: IBarreRecherche) => {  
   const intl = useIntl();
   const { langue, setLangue } = useContext(LangueContext);
-  const {messageLangue, setMessageLangue} = useContext(LangueContext);
+  const { setMessageLangue} = useContext(LangueContext);
   const changerLangue = async (event: SelectChangeEvent) => {
     setLangue(event.target.value);
     setMessageLangue(event.target.value==="fr" ? Francais:Anglais);

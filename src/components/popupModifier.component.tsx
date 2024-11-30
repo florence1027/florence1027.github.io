@@ -5,7 +5,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Grid2 as Grid } from '@mui/material';
 import { IEmprunt } from '../models/Emprunt';
 import { getToken } from '../firebase';
-import { useNavigate } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { useIntl } from 'react-intl'
 import dayjs, { Dayjs } from 'dayjs';

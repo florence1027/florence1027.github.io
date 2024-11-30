@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import Francais from '../lang/fr.json'
-import Anglais from '../lang/en.json'
-import { MessageFormatError } from 'react-intl';
-
 
 export type LangueContextType = {
   langue: string;

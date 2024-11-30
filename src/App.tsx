@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { HomeRoute } from './routes/home.route';
 import Login from './routes/login.route';
 import { AjouterEmpruntRoute } from './routes/ajouterEmprunt.route';
@@ -6,8 +5,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
 import { LangueContext } from './contexts/langue.context';
 import { IntlProvider } from 'react-intl';
-import Francais from './lang/fr.json';
-import Anglais from './lang/en.json';
 import { useContext } from 'react';
 function App() {
   const { langue } = useContext(LangueContext);
