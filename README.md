@@ -1,50 +1,14 @@
-# React + TypeScript + Vite
+# florence1027.github.io
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Procédure d’installation de l’application sur un poste local
 
-Currently, two official plugins are available:
+Clôner le dépôt puis faire npm install dans son dossier principal. Pour lancer le site en mode production, faire npm run build puis cd dist/ puis  http-server --push-state.
+Il est important de faire npm install même en production (ajouter --production=false si nécessaire pour certains hébergeurs).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Description sommaire de l’application publiée
 
-## Expanding the ESLint configuration
+L'application sers à visualiser une liste d'emprunts effectués dans une bibliothèque. Vous pouvez ajouter un emprunt en cliquant sur le bouton "Ajouter un emprunt"' qui vous redirigera vers un formulaire d'ajout. Pour modifier ou supprimer un emprunt, vous devez cliquer sur le bouton correspondant sur la fiche de l'emprunt sur la page principale. Lorsque vous arrivez sur le site pour la première fois, vous allez devoir vous connecter avec votre compte firebase. 
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Informations d’authentification 
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Un courriel t'as été envoyé pour te permettre de créer ton compte firebase. Si la demande a expiré, contacte moi!
