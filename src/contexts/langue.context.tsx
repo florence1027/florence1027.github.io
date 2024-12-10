@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Francais from '../lang/fr.json'
+//import Anglais from '../lang/en.json'
+
 
 export type LangueContextType = {
   langue: string;
@@ -9,6 +11,10 @@ export type LangueContextType = {
 };
 
 
+/**
+ * Contexte de langue
+ * Sers à changer la langue du site.
+ */
 export const LangueContext = React.createContext<LangueContextType>({
   langue: 'fr',
   setLangue: () => {},
@@ -16,6 +22,11 @@ export const LangueContext = React.createContext<LangueContextType>({
   setMessageLangue: () => {},
 });
 
+/**
+ * Retourner le contexte de langue
+ * @param props Les paramètres du Provider
+ * @returns Le context provider
+ */
 export default function LangueProvider(props: any) {
   const [langue, setLangue] = useState('fr');
   const [messageLangue, setMessageLangue] = useState(Francais);

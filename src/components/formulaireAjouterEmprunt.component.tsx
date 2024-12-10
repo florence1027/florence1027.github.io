@@ -12,6 +12,10 @@ import dayjs, { Dayjs } from 'dayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
+/**
+ * Formulaire pour ajouter un emprunt
+ * @returns La vue du formulaire
+ */
 export default function FormulaireAjouterEmprunt() {
     const intl = useIntl();
     const navigate = useNavigate();
@@ -32,6 +36,10 @@ export default function FormulaireAjouterEmprunt() {
     const [formulaireValide, setFormulaireValide] = useState(false);
     const [erreurAjout, setErreurAjout] = useState("");
 
+    /**
+     * MÉTHODES DE VALIDATION
+     */
+    //Valider le nom
     const validerNom = (nom: string) => {
         if (nom == null || nom.length == 0) {
             setNom("");
@@ -42,6 +50,7 @@ export default function FormulaireAjouterEmprunt() {
             setErreurNom("");
         }
     };
+    //Valider le prénom
     const validerPrenom = (prenom: string) => {
         if (prenom == null || prenom.length == 0) {
             setPrenom("");
@@ -52,6 +61,7 @@ export default function FormulaireAjouterEmprunt() {
             setErreurPrenom("");
         }
     };
+    //Valider l'âge
     const validerAge = (age: number) => {
         if (age <= 0 || age == null) {
             setAge(-1);
@@ -62,6 +72,7 @@ export default function FormulaireAjouterEmprunt() {
             setErreurAge("");
         }
     };
+    //Valider le numéro de compte
     const validerNumeroCompte = (numeroCompte: number) => {
         if (numeroCompte < 11111111 || numeroCompte > 99999999) {
             setNumeroCompte(-1);
@@ -72,6 +83,7 @@ export default function FormulaireAjouterEmprunt() {
             setErreurNumeroCompte("");
         }
     };
+    //Valider l'expiration du compte
     const validerExpirationCompte = (expirationCompte: Dayjs | null) => {
         if (expirationCompte == null || expirationCompte < dayjs()) {
             setExpirationCompte("01-01-1970");
@@ -82,6 +94,7 @@ export default function FormulaireAjouterEmprunt() {
             setErreurExpirationCompte("");
         }
     };
+    //Valider qu'il y a des livres
     const validerLivres = (livres: string[]) => {
         var valide = false;
         for (var i = 0; i < livres.length; i++) {
@@ -94,6 +107,7 @@ export default function FormulaireAjouterEmprunt() {
             setErreurLivres(intl.formatMessage({id: 'formulaireajout.erreurlivres'}));
         }
     };
+    //Valider les codes des livres
     const validerLivre = (livre: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
         var index = Number(livre.name.toString().slice(-1));
         console.log(index);
@@ -114,6 +128,9 @@ export default function FormulaireAjouterEmprunt() {
         validerLivres(livres);
     };
 
+    /**
+     * Désactiver le bouton d'envoi du formulaire s'il y a une erreur
+     */
     useEffect(() => {
         if (nom && prenom && age != -1 && numeroCompte != -1 && expirationCompte && expirationCompte != "01-01-1970" && livres.toString().length > 4 &&
         erreurLivres == "" && erreurLivreIndividuel.toString() == ",,,,"
@@ -125,6 +142,10 @@ export default function FormulaireAjouterEmprunt() {
         }
     }, [nom, prenom, age, numeroCompte, expirationCompte, erreurLivres, erreurLivreIndividuel, livres]);
 
+    /**
+     * Envoyer le formulaire et appel à l'api pour enregistrer le nouvel emprunt
+     * @param event L'événement d'envoi du formulaire
+     */
     const envoyerFormulaire = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         var datePourCalcul = new Date();
@@ -147,7 +168,6 @@ export default function FormulaireAjouterEmprunt() {
             actif: true,
             livres: nouveauLivres,
         };
-
         const token = await getToken();
         try {
             const response = await fetch('https://projet-integrateur-web3-api.onrender.com/api/emprunts/', {
@@ -172,17 +192,9 @@ export default function FormulaireAjouterEmprunt() {
             }
         } catch (error) {
             console.error('Request failed', error);
-        } finally {
-            //navigate('/')
         }
     };
-    /**
-     * <FormControl>
-                        <InputLabel htmlFor="inputNom">Nom</InputLabel>
-                        <Input type="text" onChange={(e) => validerNom(e.target.value)} id="inputNom" aria-describedby="erreurNom" />
-                        <FormHelperText error={true} id="erreurNom">{erreurNom}</FormHelperText>
-                    </FormControl>
-     */
+
 
     return (
         <Box

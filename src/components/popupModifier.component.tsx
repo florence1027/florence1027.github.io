@@ -12,36 +12,71 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 interface IFormulaireModifierEmprunt {
-    emprunt: IEmprunt;
+    idEmprunt: string | undefined;
     estOuvert: boolean;
     onChangementOuvert: (etat: boolean) => void;
     messageSnackbar: (text: string, severity: "success" | "error") => void;
 }
 
+/**
+ * Afficher un popup qui contient un formulaire pour modifier un emprunt.
+ * @param props Les paramètres du popup
+ * @returns Le popup
+ */
 export default function PopupModifier(props: IFormulaireModifierEmprunt) {
     const intl = useIntl();
     const regexLivre = /^(?=(?:[^0-9]*[0-9]){10}(?:(?:[^0-9]*[0-9]){3})?$)[\d-]+$/;
-    const [nom, setNom] = useState(props.emprunt.nom);
+    const [empruntActuel, setEmpruntActuel] = useState<IEmprunt>();
+    const [nom, setNom] = useState(empruntActuel ? empruntActuel.nom : "");
     const [erreurNom, setErreurNom] = useState("");
-    const [prenom, setPrenom] = useState(props.emprunt.prenom);
+    const [prenom, setPrenom] = useState(empruntActuel ? empruntActuel.prenom : "");
     const [erreurPrenom, setErreurPrenom] = useState("");
-    const [age, setAge] = useState(props.emprunt.age);
+    const [age, setAge] = useState(empruntActuel ? empruntActuel.age : -1);
     const [erreurAge, setErreurAge] = useState("");
-    const [numeroCompte, setNumeroCompte] = useState(props.emprunt.numeroCompte);
+    const [numeroCompte, setNumeroCompte] = useState(empruntActuel ? empruntActuel.numeroCompte : -1);
     const [erreurNumeroCompte, setErreurNumeroCompte] = useState("");
-    const [expirationCompte, setExpirationCompte] = useState(props.emprunt.expirationCompte.toString());
+    const [expirationCompte, setExpirationCompte] = useState(empruntActuel ? empruntActuel.expirationCompte.toString() : "");
     const [erreurExpirationCompte, setErreurExpirationCompte] = useState("");
-    const [dateRetour, setDateRetour] = useState(props.emprunt.dateRetour.toString());
+    const [dateRetour, setDateRetour] = useState(empruntActuel ? empruntActuel.dateRetour.toString() : "");
     const [erreurDateRetour, setErreurDateRetour] = useState("");
-    const [actif, setActif] = useState(props.emprunt.actif);
-    const [livres, setLivres] = useState(props.emprunt.livres);
+    const [actif, setActif] = useState(empruntActuel ? empruntActuel.actif : false);
+    const [livres, setLivres] = useState(empruntActuel ? empruntActuel.livres : ["","","","",""]);
     const [erreurLivres, setErreurLivres] = useState("");
     const [erreurLivreIndividuel, setErreurLivreIndividuel] = useState(["","","","",""]);
     const [ouvert, setOuvert] = useState(props.estOuvert);
     const [formulaireValide, setFormulaireValide] = useState(false);
+    
+    /**
+     * Appel à l'API pour avoir les informations de l'emprunt
+     */
+    const fetchEmpruntsId = async () => {
+        //setEmpruntActuel();
+        const token = await getToken();
+
+        const response = await fetch('https://projet-integrateur-web3-api.onrender.com/api/emprunts/'+ props.idEmprunt, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+    
+        const data = await response.json();
+        setEmpruntActuel(data.emprunt as IEmprunt);
+        setNom(empruntActuel ? empruntActuel.nom : "");
+        setPrenom(empruntActuel ? empruntActuel.prenom : "");
+        setAge(empruntActuel ? empruntActuel.age : -1);
+        setNumeroCompte(empruntActuel ? empruntActuel.numeroCompte : -1);
+        setExpirationCompte(empruntActuel ? empruntActuel.expirationCompte.toString() : "");
+        setDateRetour(empruntActuel ? empruntActuel.dateRetour.toString() : "");
+        setActif(empruntActuel ? empruntActuel.actif : false);
+        setLivres(empruntActuel ? empruntActuel.livres : ["","","","",""]);
+
+        setOuvert(props.estOuvert);
+    };
 
     useEffect(() => {
-        setOuvert(props.estOuvert)
+        fetchEmpruntsId();
+        //setOuvert(props.estOuvert);
+        
     }, [props.estOuvert]);
     
     const fermerPopup = () => {
@@ -49,6 +84,10 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
         //setOuvert(false);
     };
 
+    /**
+     * MÉTHODES DE VALIDATION
+     */
+    //Vérifier le nom
     const validerNom = (nom: string) => {
         if (nom == null || nom.length == 0) {
             setNom("");
@@ -59,6 +98,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
             setErreurNom("");
         }
     };
+    //Vérifier le prénom
     const validerPrenom = (prenom: string) => {
         if (prenom == null || prenom.length == 0) {
             setPrenom("")
@@ -69,6 +109,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
             setErreurPrenom("");
         }
     };
+    //Vérifier l'âge
     const validerAge = (age: number) => {
         if (age <= 0 || age == null || age > 120) {
             setAge(-1)
@@ -79,6 +120,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
             setErreurAge("");
         }
     };
+    //Vérifier le numéro de compte
     const validerNumeroCompte = (numeroCompte: number) => {
         if (numeroCompte < 11111111 || numeroCompte > 99999999) {
             setNumeroCompte(-1);
@@ -89,6 +131,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
             setErreurNumeroCompte("");
         }
     };
+    //Vérifier la date de retour
     const validerDateRetour = (dateRetour: Dayjs | null) => {
         if (dateRetour == null || dateRetour < dayjs()) {
             setDateRetour("01-01-1970");
@@ -99,6 +142,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
             setErreurDateRetour("");
         }
     };
+    //Vérifier la date d'expiration du compte
     const validerExpirationCompte = (expirationCompte: Dayjs | null) => {
         if (expirationCompte == null || expirationCompte < dayjs()) {
             setExpirationCompte("01-01-1970");
@@ -109,7 +153,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
             setErreurExpirationCompte("");
         }
     };
-
+    //Vérifier qu'il y a des livres
     const validerLivres = (livres: string[]) => {
         var valide = false;
         for (var i = 0; i < livres.length; i++) {
@@ -122,6 +166,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
             setErreurLivres(intl.formatMessage({id: 'formulaireajout.erreurlivres'}));
         }
     };
+    //Vérifier les codes de livre
     const validerLivre = (livre: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
         var index = Number(livre.name.toString().slice(-1));
         console.log(index);
@@ -142,6 +187,9 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
         validerLivres(livres);
     };
 
+    /**
+     * Rendre le bouton d'envoi du formulaire grisé s'il y a une erreur
+     */
     useEffect(() => {
         if (nom && prenom && age != -1 && numeroCompte != -1 && expirationCompte && expirationCompte != "01-01-1970" && dateRetour && dateRetour != "01-01-1970" && livres.toString().length > 4 &&
         erreurLivres == "" && erreurLivreIndividuel.toString() == ",,,,"
@@ -153,6 +201,10 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
         }
     }, [nom, prenom, age, numeroCompte, expirationCompte, dateRetour, erreurLivres, erreurLivreIndividuel, livres]);
 
+    /**
+     * Appel à l'api à l'envoi du formulaire pour enregistrer les modifications.
+     * @param event L'événement d'envoi du formulaire
+     */
     const envoyerFormulaire = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -165,7 +217,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
         }
 
         const empruntModifie: IEmprunt = {
-            _id: props.emprunt._id,
+            _id: props.idEmprunt,
             nom: nom,
             prenom: prenom,
             age: age,
@@ -218,12 +270,6 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
           component: 'form',
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             envoyerFormulaire(event);
-            /*event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();*/
           },
         }}
         >
@@ -295,8 +341,6 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
                             defaultValue={age}
                             helperText={erreurAge}
                             error={erreurAge != ""}
-                            //min={0}
-                            //max={120}
                             onChange={(e) => validerAge(Number(e.target.value))}
                         />
                     </Grid>
@@ -318,8 +362,6 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
                             defaultValue={numeroCompte}
                             helperText={erreurNumeroCompte}
                             error={erreurNumeroCompte != ""}
-                            //min={0}
-                            //max={99999999}
                             onChange={(e) => validerNumeroCompte(Number(e.target.value))}
                         />
                     </Grid>

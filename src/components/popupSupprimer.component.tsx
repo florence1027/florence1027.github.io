@@ -14,6 +14,9 @@ const theme = createTheme({
   },
 });
 
+/**
+ * Paramètre du popup
+ */
 interface PopupSupprimerProps {
     estOuvert: boolean;
     idEmprunt: string | undefined;
@@ -22,6 +25,9 @@ interface PopupSupprimerProps {
     messageSnackbar: (text: string, severity: "success" | "error") => void;
 }
 
+/**
+ * Afficher un popup pour confirmer la suppression d'un emprunt
+*/
 export default function PopupSupprimer(props: PopupSupprimerProps) {
     const [ouvert, setOuvert] = useState(props.estOuvert);
 
@@ -33,6 +39,9 @@ export default function PopupSupprimer(props: PopupSupprimerProps) {
         setOuvert(false);
     };
 
+    /**
+     * Appel à l'api
+     */
     const supprimerEmprunt = async () => {
         const token = await getToken();
         try {

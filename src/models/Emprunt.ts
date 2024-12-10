@@ -6,6 +6,6 @@ export type IEmprunt = {
     expirationCompte: Date;
     dateRetour: Date;
     actif: boolean;
-    livres: string[]; //Si il y a un problème, essayer [String]
+    livres: string[];
     _id?: string;
 };

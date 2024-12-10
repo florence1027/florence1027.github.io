@@ -8,8 +8,13 @@ import { Grid2 as Grid, Snackbar, Alert} from '@mui/material';
 import Fiche from './fiche.component';
 import { Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { BarreRecherche } from './barreRecherche.component';
+import { BarreHaut } from './barreHaut.component';
 
+/**
+ * Vue de la page d'accueil
+ * Affiche tous les emprunts dans une grille ainsi qu'une barre du haut 
+ * @returns La vue
+ */
 export const Home = () => {  
   const [emprunts, setEmprunts] = useState<IEmprunt[]>([]);
   const [user, loading] = useAuthState(auth);
@@ -19,7 +24,9 @@ export const Home = () => {
     severity: 'success' | 'error';
   } | null>(null);
 
-
+  /**
+   * Appel à l'api pour récupérer tous les emprunts
+   */
   const fetchEmprunts = async () => {
     setEmprunts([]);
     const token = await getToken();
@@ -36,6 +43,9 @@ export const Home = () => {
     setEmprunts(data.emprunts as IEmprunt[]);
   };
 
+  /**
+   * Appel à l'api pour récupérer tous les emprunts selon un code ISBN
+   */
   const fetchEmpruntsISBN = async (isbn: string) => {
     if (isbn.length == 0 || isbn == "") {
       fetchEmprunts();
@@ -54,6 +64,9 @@ export const Home = () => {
     }
   }
 
+  /**
+   * Appel à l'api pour récupérer tous les emprunts selon un nom 
+   */
   const fetchEmpruntsNom = async (nom: string) => {
     if (nom.length == 0 || nom == "") {
       fetchEmprunts();
@@ -72,18 +85,16 @@ export const Home = () => {
     }
   }
   
+  //Chercher les emprunts
   useEffect(() => {
     if (!user) return;
     fetchEmprunts();
   }, [user, loading, message]);
-  /*useEffect(() => {
-    fetchEmprunts();
-  }, []);*/
 
 
   return (
     <>
-      <BarreRecherche 
+      <BarreHaut 
           onRechercheISBN={(isbn) => fetchEmpruntsISBN(isbn)}
           onRechercheNom={(nom) => fetchEmpruntsNom(nom)}
       />

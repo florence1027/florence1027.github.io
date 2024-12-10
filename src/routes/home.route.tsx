@@ -8,6 +8,9 @@ export const HomeRoute = () => {
 const [user, loading] = useAuthState(auth);
 const navigate = useNavigate();
 
+/**
+ * Page d'accueil de l'application.
+ */
 useEffect(() => {
     // si loading = true, ça veut dire que le firebase n'est pas encore prêt.
     if (loading) return;

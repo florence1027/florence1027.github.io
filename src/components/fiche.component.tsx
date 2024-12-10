@@ -8,15 +8,22 @@ import PopupSupprimer from './popupSupprimer.component';
 import PopupModifier from './popupModifier.component';
 import { FormattedMessage } from 'react-intl';
 import { FormattedDate } from 'react-intl';
+
+
 interface IFiche {
   emprunt: IEmprunt;
   messageSnackbar: (text: string, severity: "success" | "error") => void;
 }
 
+/**
+ * Une fiche affichant les détails d'un emprunt
+ * @param props Les paramètres de la fiche
+ * @returns La vue
+ */
 export default function Fiche(props: IFiche) {
   const [popupSupprimerOuvert, setPopupSupprimerOuvert] = useState(false);
   const [popupModifierOuvert, setPopupModifierOuvert] = useState(false);
-  //const navigate = useNavigate();
+
   const confirmerSuppression = () => {
     setPopupSupprimerOuvert(true);
   };
@@ -24,7 +31,9 @@ export default function Fiche(props: IFiche) {
     setPopupModifierOuvert(true);
   }
 
+  //Rendre la liste d'emprunts plus agréable visuellement
   var listeEmpruntsPleine = props.emprunt.livres.slice();
+
   while (listeEmpruntsPleine.length != 5) {
     listeEmpruntsPleine.push("  ");
   }
@@ -120,7 +129,7 @@ export default function Fiche(props: IFiche) {
       </PopupSupprimer>
       <PopupModifier
         estOuvert={popupModifierOuvert}
-        emprunt={props.emprunt}
+        idEmprunt={props.emprunt._id}
         messageSnackbar={(text, severity) => props.messageSnackbar(text, severity)}
         onChangementOuvert={() => setPopupModifierOuvert(false)}
       ></PopupModifier>

@@ -34,6 +34,10 @@ return (
 );
 }
 
+/**
+ * 
+ * CODE EMPRUNTÉ D'ÉTIENNE RIVARD
+ */
 const defaultTheme = createTheme();
 
 function Login() {
@@ -147,4 +151,6 @@ function Login() {
         </ThemeProvider>
     );
 }
+
+/** FIN DU CODE EMPRUNTÉ */
 export default Login;
