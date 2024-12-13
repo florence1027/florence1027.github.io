@@ -1,7 +1,7 @@
 {
     "barrerecherche.isbn.placeholder": "Search by ISBN",
     "barrerecherche.nom.placeholder": "Search by name",
-    "fiche.empruntcompte": "Borrowed by {numeroCompte}",
+    "fiche.empruntcompte": "Borrowed by \n {numeroCompte}",
     "fiche.nomage": "{prenom} {nom}, {age} years old",
     "fiche.expirationcompte": "Account expires on ",
     "fiche.dateretour": "Return date : ",
@@ -44,5 +44,6 @@
     "login.mdp": "Password",
     "formulaireajout.boutonretour": "Go back to home page",
     "formulaireajout.formatlivre": "Expected format : 978-1-162-28190-5",
-    "barrerecherche.menu": "Menu"
+    "barrerecherche.menu": "Menu",
+    "formulaireajout.erreurexpirationcompteretour": "The account expiry date must be after the default return date"
 }

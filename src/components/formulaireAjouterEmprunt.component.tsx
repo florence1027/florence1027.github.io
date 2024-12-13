@@ -85,9 +85,15 @@ export default function FormulaireAjouterEmprunt() {
     };
     //Valider l'expiration du compte
     const validerExpirationCompte = (expirationCompte: Dayjs | null) => {
+        //Si elle est dans le passé
         if (expirationCompte == null || expirationCompte < dayjs()) {
             setExpirationCompte("01-01-1970");
             setErreurExpirationCompte(intl.formatMessage({id: 'formulaireajout.erreurexpirationcompte'}));
+        }
+        //Sinon, on veut avoir 14 jours entre la date d'aujourd'hui et la date d'expiration du compte pour que la date de retour prévue soit avant cette expiration
+        else if (expirationCompte < dayjs().add(14,'day')) {
+            setExpirationCompte("01-01-1970");
+            setErreurExpirationCompte(intl.formatMessage({id: 'formulaireajout.erreurexpirationcompteretour'}));
         }
         else {
             setExpirationCompte(expirationCompte.format());
@@ -110,7 +116,7 @@ export default function FormulaireAjouterEmprunt() {
     //Valider les codes des livres
     const validerLivre = (livre: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
         var index = Number(livre.name.toString().slice(-1));
-        console.log(index);
+
         if (!regexLivre.test(livre.value) && livre.value.length != 0) {
             var copieErreurs = erreurLivreIndividuel.slice();
             copieErreurs[index] = intl.formatMessage({id: 'formulaireajout.erreurlivreindividuel'});
@@ -148,6 +154,8 @@ export default function FormulaireAjouterEmprunt() {
      */
     const envoyerFormulaire = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        //La date de retour d'un emprunt est normalement 2 semaines après
         var datePourCalcul = new Date();
         datePourCalcul.setDate(datePourCalcul.getDate()+14);
 
@@ -181,8 +189,7 @@ export default function FormulaireAjouterEmprunt() {
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-            const data = await response.json();
-            console.log('Response:', data);
+            await response.json();
 
             if (response.ok) {
                 navigate('/')
@@ -312,13 +319,14 @@ export default function FormulaireAjouterEmprunt() {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 disablePast
+                                
                                 sx={{input: {height: '10px'}}}
                                 onChange={(e) => validerExpirationCompte(e)}
                             />
                         </LocalizationProvider>
                     </Grid>
-                    <Grid size={3} sx={{display: 'flex', flexDirection:'column', alignItems:'center'}}>
-                        <FormLabel error={true}>{erreurExpirationCompte}</FormLabel>
+                    <Grid size={12} sx={{display: 'flex', flexDirection:'column', alignItems:'center', justifyContent: 'center'}}>
+                        <FormLabel sx={{fontSize: 12, textAlign: 'center'}} error={true}>{erreurExpirationCompte}</FormLabel>
                     </Grid>
                     <Grid size={12} sx={{display: 'flex', flexDirection:'column', alignItems:'center'}}>
                         <FormattedMessage
@@ -409,7 +417,7 @@ export default function FormulaireAjouterEmprunt() {
                             <Grid size={3} sx={{display: 'flex', flexDirection:'column', alignItems:'start'}}>
                             </Grid>
                         </Grid>
-                        <FormLabel error={true}>{erreurLivres}</FormLabel>
+                        <FormLabel sx={{fontSize: 12, textAlign: 'center'}} error={true}>{erreurLivres}</FormLabel>
                         
                     </Grid>
                     <Grid size={12}>

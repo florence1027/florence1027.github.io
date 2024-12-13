@@ -1,7 +1,7 @@
 {
     "barrerecherche.isbn.placeholder": "Filtrer par ISBN",
     "barrerecherche.nom.placeholder": "Filtrer par nom",
-    "fiche.empruntcompte": "Emprunt du compte {numeroCompte}",
+    "fiche.empruntcompte": "Emprunt du compte \n {numeroCompte}",
     "fiche.nomage": "{prenom} {nom}, {age} ans",
     "fiche.expirationcompte": "Compte expire le ",
     "fiche.dateretour": "Date de retour : ",
@@ -44,5 +44,6 @@
     "login.mdp": "Mot de passe",
     "formulaireajout.boutonretour": "Retourner à l'accueil",
     "formulaireajout.formatlivre": "Format attendu : 978-1-162-28190-5",
-    "barrerecherche.menu": "Menu"
+    "barrerecherche.menu": "Menu",
+    "formulaireajout.erreurexpirationcompteretour": "La date d'expiration du compte doit être avant la date de retour attendue de 14 jours"
 }

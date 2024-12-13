@@ -169,7 +169,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
     //Vérifier les codes de livre
     const validerLivre = (livre: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
         var index = Number(livre.name.toString().slice(-1));
-        console.log(index);
+
         if (!regexLivre.test(livre.value) && livre.value.length != 0) {
             var copieErreurs = erreurLivreIndividuel.slice();
             copieErreurs[index] = intl.formatMessage({id: 'formulaireajout.erreurlivreindividuel'});
@@ -229,7 +229,7 @@ export default function PopupModifier(props: IFormulaireModifierEmprunt) {
         };
 
         const token = await getToken();
-        console.log(JSON.stringify({emprunt: empruntModifie}));
+        //console.log(JSON.stringify({emprunt: empruntModifie}));
         try {
             const response = await fetch('https://projet-integrateur-web3-api.onrender.com/api/emprunts/', {
                 method: 'PUT',

@@ -85,11 +85,19 @@ export const Home = () => {
     }
   }
   
-  //Chercher les emprunts
+  //Chercher les emprunts au chargement
   useEffect(() => {
     if (!user) return;
     fetchEmprunts();
-  }, [user, loading, message]);
+  }, [user, loading]);
+
+  //Chercher les emprunts après une modif ou une suppression
+  useEffect(() => {
+    //Vérifier que le popup est apparu pour ne pas rafraichir à sa fin
+    if (message != null) {
+      fetchEmprunts();
+    }
+  }, [message]);
 
 
   return (
@@ -123,7 +131,6 @@ export const Home = () => {
 
         {emprunts &&
           emprunts.map((emprunt, index) => {
-            
             return (
               <Grid key={index}>
                 <Fiche
