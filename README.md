@@ -11,4 +11,4 @@ L'application sers à visualiser une liste d'emprunts effectués dans une biblio
 
 ## Informations d’authentification 
 
-Un courriel t'as été envoyé pour te permettre de créer ton compte firebase. Si la demande a expiré, contacte moi!
+Ton compte pour utiliser mon application utilise ton courriel et le mot de passe est "devweb3".
